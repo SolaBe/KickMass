@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">KickMass</string>
+    <string name="title_activity_list_followers">ListFollowersActivity</string>
+    <string name="login_activity_label_login">Login to your instagram account</string>
+</resources>

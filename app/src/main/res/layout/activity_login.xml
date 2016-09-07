@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="sola2be.kickmass.LoginActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/layoutLogin"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/logo"
+            android:id="@+id/imageView" />
+
+        <TextView
+            android:text="@string/login_activity_label_login"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/textView" />
+
+        <!--<Button-->
+            <!--android:text="Login"-->
+            <!--android:textColor="@color/textColorPrimary"-->
+            <!--android:paddingLeft="40dp"-->
+            <!--android:paddingRight="40dp"-->
+            <!--android:onClick="onLoginClick"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/button" />-->
+
+        <com.instagram.instagramapi.widgets.InstagramLoginButton
+            android:id="@+id/instagramLoginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorPrimary"
+            android:text="Login" />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
