@@ -17,6 +17,7 @@ import com.instagram.instagramapi.objects.IGRelationship;
 import com.instagram.instagramapi.objects.IGUser;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,6 +70,10 @@ public class FollowersAdapter extends ArrayAdapter<IGUser> {
         private TextView textName;
         private TextView textDescr;
         private ImageView imageUnfollow;
+    }
+
+    public List<IGUser> getList() {
+        return userList;
     }
 
     @Override

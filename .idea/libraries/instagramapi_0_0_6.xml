@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="instagramapi-0.0.6">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.sayyam/instagramapi/0.0.6/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.sayyam/instagramapi/0.0.6/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.sayyam/instagramapi/0.0.6/78cfd0e8edf16851f0536349a806d6e525910d26/instagramapi-0.0.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
