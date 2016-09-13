@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.instagram.instagramapi.engine.InstagramAuthenticationClient;
 import com.instagram.instagramapi.engine.InstagramEngine;
@@ -22,16 +23,46 @@ import com.instagram.instagramapi.objects.IGRelationship;
 import com.instagram.instagramapi.objects.IGUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListFollowersActivity extends AppCompatActivity {
 
     private ListView listViewFollowers;
     private FollowersAdapter adapter;
+    private ArrayList<IGUser> listFollowBy;
+    private TextView textCountFollowers;
+    private InstagramAPIResponseCallback<ArrayList<IGUser>> apiCallbackUsersFollowBy = new InstagramAPIResponseCallback<ArrayList<IGUser>>() {
+        @Override
+        public void onResponse(ArrayList<IGUser> responseObject, IGPagInfo pageInfo) {
+            Log.d("onResponse follow by ",responseObject.size()+"");
+//            adapter = new FollowersAdapter(ListFollowersActivity.this,R.layout.list_item,responseObject);
+//            listViewFollowers.setAdapter(adapter);
+            listFollowBy = responseObject;
+            InstagramEngine.getInstance(ListFollowersActivity.this).getUsersIFollow(apiCallbackUsersFollow);
+        }
+
+        @Override
+        public void onFailure(InstagramException exception) {
+
+        }
+    };
+
     private InstagramAPIResponseCallback<ArrayList<IGUser>> apiCallbackUsersFollow = new InstagramAPIResponseCallback<ArrayList<IGUser>>() {
+
+
         @Override
         public void onResponse(ArrayList<IGUser> responseObject, IGPagInfo pageInfo) {
             Log.d("onResponse followers",responseObject.size()+"");
-            adapter = new FollowersAdapter(ListFollowersActivity.this,R.layout.list_item,responseObject);
+            List<IGUser> finalList = new ArrayList<>();
+            int countFollowBy = listFollowBy.size();
+            int countFollowers = responseObject.size();
+            int size = Math.min(countFollowBy,countFollowers);
+            for (int i = 0; i < size; i++) {
+                if (listFollowBy.get(i).getId() == responseObject.get(i).getId())
+                    finalList.add(responseObject.get(i));
+            }
+            textCountFollowers.setText(String.valueOf(finalList.size()));
+            adapter = new FollowersAdapter(ListFollowersActivity.this,R.layout.list_item,finalList);
             listViewFollowers.setAdapter(adapter);
         }
 
@@ -45,8 +76,8 @@ public class ListFollowersActivity extends AppCompatActivity {
 
         @Override
         public void onResponse(IGUser responseObject, IGPagInfo pageInfo) {
-            Log.d("onResponse", responseObject.getFollowsCount()+"");
-            InstagramEngine.getInstance(ListFollowersActivity.this).getFollowersOfUser(apiCallbackUsersFollow,responseObject.getId());
+            //Log.d("onResponse", responseObject.getFollowsCount()+"");
+            //InstagramEngine.getInstance(ListFollowersActivity.this).getFollowersOfUser(apiCallbackUsersFollow,responseObject.getId());
         }
 
         @Override
@@ -60,23 +91,25 @@ public class ListFollowersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_followers);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setLogo(R.mipmap.ic_logo);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setIcon(R.drawable.logo);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         String token = getIntent().getStringExtra("token");
+
         listViewFollowers = (ListView) findViewById(R.id.listFollowers);
+        textCountFollowers = (TextView) findViewById(R.id.countFollowers);
+        InstagramEngine.getInstance(this).getFollowedBy(apiCallbackUsersFollowBy);
 
-        InstagramEngine.getInstance(this).getFollowedBy(apiCallbackUsersFollow);
-
-        InstagramEngine.getInstance(this).getUserDetails(apiCallbackUser);
+       // InstagramEngine.getInstance(this).getUserDetails(apiCallbackUser);
         //InstagramEngine.getInstance(this).unFollowUser();
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
     }
 
     @Override

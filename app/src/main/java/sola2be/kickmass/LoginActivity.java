@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        InstagramEngine.getInstance(LoginActivity.this).logout(LoginActivity.this,0);
+        //InstagramEngine.getInstance(LoginActivity.this).logout(LoginActivity.this,0);
         String[] scopes = {InstagramKitLoginScope.BASIC, InstagramKitLoginScope.FOLLOWER_LIST, InstagramKitLoginScope.RELATIONSHIP};
         InstagramLoginButton instagramLoginButton = (InstagramLoginButton) findViewById(R.id.instagramLoginButton);
         instagramLoginButton.setInstagramLoginCallback(loginListener);
