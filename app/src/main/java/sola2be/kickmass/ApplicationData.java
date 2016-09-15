@@ -1,5 +1,7 @@
 package sola2be.kickmass;
 
+import com.instagram.instagramapi.objects.IGSession;
+
 /**
  * Created by Sola2Be on 01.09.2016.
  */
@@ -14,4 +16,6 @@ public class ApplicationData {
 
     public static final String AUTORIZATION_URL = "https://api.instagram.com/oauth/authorize/?client_id="
             +CLIENT_ID+"&redirect_uri="+REDIRECT_URI+"&response_type=code&scope=follower_list+relationships";
+
+    public static IGSession session = null;
 }

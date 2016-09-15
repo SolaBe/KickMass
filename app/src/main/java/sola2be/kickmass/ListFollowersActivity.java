@@ -1,5 +1,7 @@
 package sola2be.kickmass;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.instagram.instagramapi.engine.InstagramAuthenticationClient;
 import com.instagram.instagramapi.engine.InstagramEngine;
@@ -25,8 +28,9 @@ import com.instagram.instagramapi.objects.IGUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListFollowersActivity extends AppCompatActivity {
+public class ListFollowersActivity extends AppCompatActivity implements UnfollowInterface{
 
+    private final static int REQUEST_LOGOUT = 312;
     private ListView listViewFollowers;
     private FollowersAdapter adapter;
     private ArrayList<IGUser> listFollowBy;
@@ -58,26 +62,13 @@ public class ListFollowersActivity extends AppCompatActivity {
             int countFollowers = responseObject.size();
             int size = Math.min(countFollowBy,countFollowers);
             for (int i = 0; i < size; i++) {
-                if (listFollowBy.get(i).getId() == responseObject.get(i).getId())
+                if (!listFollowBy.get(i).getId().equals(responseObject.get(i).getId()))
                     finalList.add(responseObject.get(i));
             }
-            textCountFollowers.setText(String.valueOf(finalList.size()));
-            adapter = new FollowersAdapter(ListFollowersActivity.this,R.layout.list_item,finalList);
+            //textCountFollowers.setText(String.valueOf(finalList.size()));
+            textCountFollowers.setText(String.valueOf(responseObject.size()));
+            adapter = new FollowersAdapter(ListFollowersActivity.this,R.layout.list_item,responseObject);
             listViewFollowers.setAdapter(adapter);
-        }
-
-        @Override
-        public void onFailure(InstagramException exception) {
-
-        }
-    };
-
-    private InstagramAPIResponseCallback<IGUser> apiCallbackUser = new InstagramAPIResponseCallback<IGUser>() {
-
-        @Override
-        public void onResponse(IGUser responseObject, IGPagInfo pageInfo) {
-            //Log.d("onResponse", responseObject.getFollowsCount()+"");
-            //InstagramEngine.getInstance(ListFollowersActivity.this).getFollowersOfUser(apiCallbackUsersFollow,responseObject.getId());
         }
 
         @Override
@@ -114,7 +105,12 @@ public class ListFollowersActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout :
+                InstagramEngine.getInstance(this).logout(ListFollowersActivity.this,REQUEST_LOGOUT);
+                break;
 
+        }
         return true;
     }
 
@@ -133,6 +129,7 @@ public class ListFollowersActivity extends AppCompatActivity {
                     }
                     adapter.getList().remove(index);
                     adapter.notifyDataSetChanged();
+                    textCountFollowers.setText(String.valueOf(adapter.getCount()));
                 }
 
                 @Override
@@ -142,4 +139,39 @@ public class ListFollowersActivity extends AppCompatActivity {
             },user.getId());
         }
     }
+
+    @Override
+    public void onUserUnfollow(int count) {
+        textCountFollowers.setText(String.valueOf(count));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_LOGOUT) {
+            if (resultCode == Activity.RESULT_OK) {
+                //InstagramEngine.getInstance(this).setSession(null);
+                ListFollowersActivity.this.finishActivity(0);
+                Intent intent = new Intent(this,LoginActivity.class);
+                startActivity(intent);
+            }
+            else {
+                Toast.makeText(this,"Logout failed",Toast.LENGTH_LONG).show(); // TODO debug toast
+            }
+        }
+    }
+
+    //    private InstagramAPIResponseCallback<IGUser> apiCallbackUser = new InstagramAPIResponseCallback<IGUser>() {
+//
+//        @Override
+//        public void onResponse(IGUser responseObject, IGPagInfo pageInfo) {
+//            //Log.d("onResponse", responseObject.getFollowsCount()+"");
+//            //InstagramEngine.getInstance(ListFollowersActivity.this).getFollowersOfUser(apiCallbackUsersFollow,responseObject.getId());
+//        }
+//
+//        @Override
+//        public void onFailure(InstagramException exception) {
+//
+//        }
+//    };
 }

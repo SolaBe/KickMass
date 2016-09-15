@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         public void onSuccess(IGSession result) {
             Log.d("onSuccess"," "+result.getAccessToken());
             startListFollowersActivity(result.getAccessToken());
+            ApplicationData.session  = result;
         }
 
         @Override
@@ -64,4 +65,9 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        //super.onBackPressed();
+    }
 }

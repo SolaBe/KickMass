@@ -30,7 +30,7 @@ public class FollowersAdapter extends ArrayAdapter<IGUser> {
     private List<IGUser> userList;
     private Context context;
     private LayoutInflater inflater;
-    private VHolder holder;
+    private UnfollowInterface mInterface;
     private static String removeId;
     private InstagramAPIResponseCallback<IGRelationship> callback =  new InstagramAPIResponseCallback<IGRelationship>() {
         @Override
@@ -43,6 +43,7 @@ public class FollowersAdapter extends ArrayAdapter<IGUser> {
             }
             userList.remove(index);
             notifyDataSetChanged();
+            mInterface.onUserUnfollow(userList.size());
         }
 
         @Override
@@ -63,6 +64,7 @@ public class FollowersAdapter extends ArrayAdapter<IGUser> {
         this.userList = objects;
         this.context = context;
         inflater = LayoutInflater.from(context);
+        mInterface = (UnfollowInterface) context;
     }
 
     class VHolder {
@@ -85,6 +87,7 @@ public class FollowersAdapter extends ArrayAdapter<IGUser> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         IGUser user = userList.get(position);
+        VHolder holder;
         if (view == null) {
             view = inflater.inflate(R.layout.list_item,null);
             holder = new VHolder();
