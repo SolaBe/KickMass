@@ -150,7 +150,7 @@ public class ListFollowersActivity extends AppCompatActivity implements Unfollow
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOGOUT) {
             if (resultCode == Activity.RESULT_OK) {
-                //InstagramEngine.getInstance(this).setSession(null);
+                // InstagramEngine.getInstance(this).setSession(null);
                 ListFollowersActivity.this.finishActivity(0);
                 Intent intent = new Intent(this,LoginActivity.class);
                 startActivity(intent);
